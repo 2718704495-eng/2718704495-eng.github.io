@@ -13,4 +13,5 @@ playwright-report/
 playwright/.cache/
 .lighthouseci/
 output/
+tmp/
 .superpowers/

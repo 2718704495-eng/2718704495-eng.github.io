@@ -20,6 +20,11 @@ afterEach(async () => {
 });
 
 describe('发布内容审计', () => {
+  it('当前公开 PDF 只包含获准联系方式', async () => {
+    const errors = await auditContent(process.cwd());
+    expect(errors).toEqual([]);
+  });
+
   it('识别模板残留和缺失的 PDF 简历', async () => {
     const root = await createFixture();
     await writeFile(join(root, 'src', 'page.astro'), '<p>John Doe at example.com</p>');

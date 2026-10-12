@@ -107,11 +107,21 @@ const navItems = [
 
     .site-nav {
       gap: 0.4rem;
-      padding-left: 0.55rem;
+      padding-inline: 0.55rem;
+      border-radius: var(--radius-md);
+      flex-wrap: wrap;
     }
 
-    .brand strong {
+    .brand {
       display: none;
+    }
+
+    .nav-links {
+      width: 100%;
+      overflow: visible;
+      flex: 1 1 100%;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .nav-links a {

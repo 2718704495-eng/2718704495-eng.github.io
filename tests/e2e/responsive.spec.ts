@@ -34,6 +34,14 @@ test('放大到 200% 字号后核心内容仍能回流', async ({ page }) => {
   }));
 
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+  const navLinks = page.getByRole('navigation', { name: '主导航' }).getByRole('link');
+  for (let index = 0; index < (await navLinks.count()); index += 1) {
+    await navLinks.nth(index).focus();
+    const box = await navLinks.nth(index).boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(375);
+  }
   await expect(page.getByRole('heading', { name: '重点项目' })).toBeVisible();
   await expect(page.locator('#contact')).toBeVisible();
 });

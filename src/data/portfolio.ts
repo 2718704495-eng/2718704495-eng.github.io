@@ -145,7 +145,6 @@ export const projects: Project[] = [
       '使用 FastAPI、SQLAlchemy 和 MySQL 实现登录、位置校验与打卡；以行锁、事务和唯一约束处理并发；AI 生成结构化讲解，Blender 处理 GLB，阿里云私有 OSS 提供短期访问地址。',
     outcome: '完成地图探索、景点讲解、可信打卡和三维展示的一体化闭环，并覆盖鉴权、并发、降级和资源下载测试。',
     technologies: ['微信小程序', 'FastAPI', 'MySQL', 'AI 讲解', 'Blender', '阿里云 OSS'],
-    href: 'https://github.com/2718704495-eng/shenzhou-checkin',
   },
   {
     name: '微信 AI 聊天助手',

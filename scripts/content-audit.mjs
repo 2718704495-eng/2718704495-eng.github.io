@@ -1,6 +1,7 @@
 import { access, readdir, readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 const textExtensions = new Set(['.astro', '.css', '.html', '.js', '.json', '.md', '.mjs', '.ts', '.txt', '.svg']);
 const forbidden = ['John Doe', 'Jane Doe', 'example.com', 'Lorem ipsum', 'floating-astronaut'];
@@ -11,6 +12,8 @@ const requiredAssets = [
   'public/site.webmanifest',
   'public/resume/wang-xiaolei-ai-fullstack.pdf',
 ];
+const publicResume = 'public/resume/wang-xiaolei-ai-fullstack.pdf';
+const approvedEmail = '2718704495@qq.com';
 
 async function collectTextFiles(directory) {
   const files = [];
@@ -47,6 +50,33 @@ export async function auditContent(root) {
       await access(join(root, asset));
     } catch {
       errors.push(`缺少发布文件：${asset}`);
+    }
+  }
+
+  try {
+    const data = new Uint8Array(await readFile(join(root, publicResume)));
+    const loadingTask = getDocument({ data, disableWorker: true, verbosity: 0 });
+    const pdf = await loadingTask.promise;
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push(content.items.map((item) => ('str' in item ? item.str : '')).join(' '));
+    }
+    await loadingTask.destroy();
+
+    const resumeText = pages.join('\n');
+    if (/(?<!\d)1[3-9]\d{9}(?!\d)/.test(resumeText)) {
+      errors.push(`${publicResume} 包含不应公开的手机号`);
+    }
+    const emails = resumeText.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g) ?? [];
+    const unapprovedEmails = [...new Set(emails)].filter((email) => email !== approvedEmail);
+    if (!emails.includes(approvedEmail) || unapprovedEmails.length > 0) {
+      errors.push(`${publicResume} 的公开邮箱与网站资料不一致`);
+    }
+  } catch (error) {
+    if (!errors.some((message) => message.includes(publicResume))) {
+      errors.push(`${publicResume} 无法完成隐私审计：${error instanceof Error ? error.message : '未知错误'}`);
     }
   }
 

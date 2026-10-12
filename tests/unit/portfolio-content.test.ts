@@ -33,8 +33,10 @@ describe('作品集内容契约', () => {
 
   it('允许未公开项目不提供链接', () => {
     const medicalAgent = projects.find((project) => project.name === '医疗智能导诊 Agent');
+    const shenzhouCheckin = projects.find((project) => project.name === '神州打卡绘微信小程序');
     expect(medicalAgent).toBeDefined();
     expect(medicalAgent?.href).toBeUndefined();
+    expect(shenzhouCheckin?.href).toBeUndefined();
   });
 
   it('只公开已确认的安全联系方式', () => {

@@ -37,7 +37,7 @@ test('项目卡片展示业务闭环且仅在有地址时提供项目链接', as
   await expect(page.getByRole('heading', { name: '神州打卡绘微信小程序' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '微信 AI 聊天助手' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '文博元宇宙数字人交互系统' })).toBeVisible();
-  await expect(page.locator('[data-project-link]')).toHaveCount(2);
+  await expect(page.locator('[data-project-link]')).toHaveCount(1);
 });
 
 test('教育荣誉和联系入口可见', async ({ page }) => {
