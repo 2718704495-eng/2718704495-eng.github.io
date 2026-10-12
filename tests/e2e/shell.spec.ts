@@ -18,9 +18,13 @@ test('为键盘用户提供清晰的主内容入口和站内导航', async ({ pa
 
 test('站内导航可以到达对应区域', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: '项目', exact: true }).click();
+  const navigation = page.getByRole('navigation', { name: '主导航' });
+  const projectLink = navigation.getByRole('link', { name: '项目', exact: true });
+  await projectLink.click();
   await expect(page).toHaveURL(/#projects$/);
   await expect(page.locator('#projects')).toBeInViewport();
+  await expect(navigation).toBeInViewport();
+  await expect(projectLink).toHaveAttribute('aria-current', 'location');
 });
 
 test.describe('渐进增强', () => {
@@ -28,9 +32,9 @@ test.describe('渐进增强', () => {
 
   test('禁用 JavaScript 后核心区块仍然可见', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: '核心能力' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: '工作经历' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: '重点项目' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '能力不是 关键词。' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '真实业务 如何落地。' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '代表项目' })).toBeVisible();
   });
 });
 

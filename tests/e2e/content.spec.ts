@@ -8,13 +8,13 @@ test('首屏清楚呈现职业定位和三个主要入口', async ({ page }) => 
   const hero = page.locator('#about');
   await expect(page.getByRole('heading', { level: 1, name: '王晓磊' })).toBeVisible();
   await expect(page.getByText('AI 应用 · Java 全栈工程师', { exact: true })).toBeVisible();
-  await expect(page.getByText('将业务需求转化为可验证、可交付的 AI 与全栈产品。')).toBeVisible();
-  await expect(hero.getByRole('link', { name: '查看项目' })).toHaveAttribute('href', '#projects');
+  await expect(page.getByText('把复杂业务，做成真正能运行的产品。')).toBeVisible();
+  await expect(hero.getByRole('link', { name: '查看代表项目' })).toHaveAttribute('href', '#projects');
   await expect(hero.getByRole('link', { name: '下载简历' })).toHaveAttribute(
     'href',
     '/resume/wang-xiaolei-ai-fullstack.pdf',
   );
-  await expect(hero.getByRole('link', { name: '访问 GitHub' })).toHaveAttribute(
+  await expect(hero.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
     'href',
     'https://github.com/2718704495-eng',
   );

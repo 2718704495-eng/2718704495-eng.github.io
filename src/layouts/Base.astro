@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteNav from '../components/SiteNav.astro';
+import InteractionEnhancements from '../components/InteractionEnhancements.astro';
 import { profile } from '../data/portfolio';
 import '../styles/global.css';
 
@@ -42,7 +43,7 @@ const personSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#07111f" />
+    <meta name="theme-color" content="#f2f0e8" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -57,6 +58,7 @@ const personSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title}</title>
   </head>
   <body>
@@ -66,5 +68,6 @@ const personSchema = {
       <slot />
     </main>
     <SiteFooter />
+    <InteractionEnhancements />
   </body>
 </html>

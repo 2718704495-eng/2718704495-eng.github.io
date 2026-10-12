@@ -1,0 +1,73 @@
+<script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const lowEndDevice = navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4;
+  const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
+  const revealItems = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+  if (reducedMotion.matches || !supportsIntersectionObserver) {
+    revealItems.forEach((item) => item.classList.add('is-visible'));
+  } else {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          (entry.target as HTMLElement).classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.08 },
+    );
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  const heroArt = document.querySelector<HTMLElement>('[data-hero-art]');
+
+  if (heroArt && !reducedMotion.matches && !lowEndDevice) {
+    let pointerFrame = 0;
+
+    heroArt.addEventListener('pointermove', (event) => {
+      if (pointerFrame) return;
+      const { clientX, clientY } = event;
+
+      pointerFrame = window.requestAnimationFrame(() => {
+        const bounds = heroArt.getBoundingClientRect();
+        const x = ((clientX - bounds.left) / bounds.width - 0.5) * 2;
+        const y = ((clientY - bounds.top) / bounds.height - 0.5) * 2;
+        heroArt.style.setProperty('--pointer-x', x.toFixed(3));
+        heroArt.style.setProperty('--pointer-y', y.toFixed(3));
+        pointerFrame = 0;
+      });
+    });
+
+    heroArt.addEventListener('pointerleave', () => {
+      if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = 0;
+      heroArt.style.setProperty('--pointer-x', '0');
+      heroArt.style.setProperty('--pointer-y', '0');
+    });
+  }
+
+  const sections = document.querySelectorAll<HTMLElement>('main section[id]');
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav-links a'));
+
+  if (supportsIntersectionObserver) {
+    const navigationObserver = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!visibleEntry) return;
+        navLinks.forEach((link) => {
+          const active = link.hash === `#${visibleEntry.target.id}`;
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5] },
+    );
+
+    sections.forEach((section) => navigationObserver.observe(section));
+  }
+</script>

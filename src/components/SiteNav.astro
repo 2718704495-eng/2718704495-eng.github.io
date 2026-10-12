@@ -2,10 +2,10 @@
 import { profile } from '../data/portfolio';
 
 const navItems = [
-  { href: '#about', label: '关于' },
+  { href: '#about', label: '首页' },
   { href: '#experience', label: '经历' },
   { href: '#projects', label: '项目' },
-  { href: '#workflow', label: 'AI 工作流' },
+  { href: '#workflow', label: '方法' },
   { href: '#contact', label: '联系' },
 ];
 ---
@@ -19,114 +19,166 @@ const navItems = [
     <div class="nav-links">
       {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
     </div>
+    <a class="nav-resume" href={profile.resume} download>
+      简历 PDF <span aria-hidden="true">↘</span>
+    </a>
   </nav>
 </header>
 
 <style>
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 50;
-    padding-block: 0.75rem;
-    pointer-events: none;
+    width: 100%;
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+    backdrop-filter: blur(16px);
+    container-type: inline-size;
   }
 
   .site-nav {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 1.25rem;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 3.75rem;
-    padding: 0.55rem 0.7rem 0.55rem 0.9rem;
-    border: 1px solid color-mix(in srgb, var(--color-border) 86%, transparent);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
-    box-shadow: var(--shadow-nav);
-    backdrop-filter: blur(18px);
-    pointer-events: auto;
+  }
+
+  .brand,
+  .nav-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.82rem;
+    text-decoration: none;
   }
 
   .brand {
-    display: inline-flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 0.65rem;
-    text-decoration: none;
+    justify-self: start;
   }
 
   .brand span {
     display: grid;
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-    color: #04121c;
-    font-size: 0.76rem;
-    font-weight: 900;
-    letter-spacing: 0.03em;
+    width: 2.45rem;
+    height: 2.45rem;
+    background: var(--color-dark);
+    color: var(--color-accent);
+    font: 800 0.72rem/1 var(--font-mono);
     place-items: center;
   }
 
   .brand strong {
-    font-size: 0.95rem;
+    letter-spacing: 0.02em;
   }
 
   .nav-links {
     display: flex;
-    align-items: center;
-    gap: 0.15rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    display: none;
+    padding: 0.25rem;
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(14px);
   }
 
   .nav-links a {
-    min-height: 2.65rem;
-    padding: 0.55rem 0.8rem;
-    border-radius: 999px;
+    min-height: 2.5rem;
+    padding: 0.55rem 0.85rem;
     color: var(--color-muted);
-    font-size: 0.9rem;
-    font-weight: 650;
+    font-size: 0.78rem;
+    font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
-    transition: color var(--transition-fast), background var(--transition-fast);
+    transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
   }
 
-  .nav-links a:hover {
-    background: var(--color-surface-raised);
-    color: var(--color-text);
+  .nav-links a:hover,
+  .nav-links a[aria-current='location'] {
+    background: var(--color-dark);
+    color: var(--color-on-dark);
   }
 
-  @media (max-width: 720px) {
+  .nav-resume {
+    min-height: 2.75rem;
+    justify-self: end;
+    font-weight: 800;
+  }
+
+  @media (max-width: 1100px) {
     .site-header {
-      padding-block: 0.5rem;
+      position: sticky;
+      padding-block: 0;
+      border-bottom: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+      backdrop-filter: blur(16px);
     }
 
     .site-nav {
-      gap: 0.4rem;
-      padding-inline: 0.55rem;
-      border-radius: var(--radius-md);
-      flex-wrap: wrap;
+      display: flex;
+      min-height: 4rem;
+      gap: 0.75rem;
+      justify-content: space-between;
     }
 
-    .brand {
+    .brand,
+    .nav-resume {
       display: none;
     }
 
     .nav-links {
       width: 100%;
-      overflow: visible;
-      flex: 1 1 100%;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      overflow-x: auto;
       flex-wrap: wrap;
       justify-content: center;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
     }
 
     .nav-links a {
+      min-height: 2.75rem;
       padding-inline: 0.65rem;
-      font-size: 0.82rem;
+    }
+  }
+
+  @container (max-width: 60rem) {
+    .site-nav {
+      display: flex;
+      min-height: 4rem;
+      gap: 0.75rem;
+      justify-content: space-between;
+    }
+
+    .brand,
+    .nav-resume {
+      display: none;
+    }
+
+    .nav-links {
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      overflow-x: auto;
+      flex-wrap: wrap;
+      justify-content: center;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-links a {
+      min-height: 2.75rem;
+      padding-inline: 0.65rem;
     }
   }
 </style>

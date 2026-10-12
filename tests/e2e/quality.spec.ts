@@ -1,18 +1,15 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-for (const colorScheme of ['dark', 'light'] as const) {
-  test(`${colorScheme} 主题没有自动化可检测的 WCAG A/AA 问题`, async ({ page }) => {
-    await page.emulateMedia({ colorScheme });
-    await page.goto('/');
+test('暖白主题没有自动化可检测的 WCAG A/AA 问题', async ({ page }) => {
+  await page.goto('/');
 
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-      .analyze();
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+    .analyze();
 
-    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
-  });
-}
+  expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
+});
 
 test('页面加载无控制台错误，导航锚点和 PDF 均可访问', async ({ page, request }) => {
   const consoleErrors: string[] = [];
@@ -21,7 +18,7 @@ test('页面加载无控制台错误，导航锚点和 PDF 均可访问', async 
   });
 
   await page.goto('/');
-  const navLinks = page.getByRole('navigation', { name: '主导航' }).getByRole('link');
+  const navLinks = page.getByRole('navigation', { name: '主导航' }).locator('a[href^="#"]');
   const count = await navLinks.count();
   for (let index = 0; index < count; index += 1) {
     const href = await navLinks.nth(index).getAttribute('href');

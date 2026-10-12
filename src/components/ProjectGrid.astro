@@ -1,54 +1,79 @@
 ---
 import { projects } from '../data/portfolio';
+
+const projectMarks = ['MED·AI', 'MAP·3D', 'WE·AI', 'META'];
+const projectTones = ['dark', 'lime', 'paper', 'gray'];
 ---
 
-<section id="projects" class="section" aria-labelledby="projects-title">
+<section id="projects" class="section projects" aria-labelledby="projects-title">
   <div class="container">
-    <div class="section-heading section-heading-wide">
+    <div class="section-heading project-heading" data-reveal>
       <div>
         <p class="section-kicker">03 / SELECTED WORK</p>
-        <h2 id="projects-title">重点项目</h2>
+        <p class="project-count">04 CASES<br />2025—2026</p>
       </div>
-      <p>每个项目都按业务问题、本人职责、技术方案和结果展开，体现真实的工程判断与完整交付能力。</p>
+      <div>
+        <h2 id="projects-title">代表项目</h2>
+        <p>每个项目都从业务问题出发，展开本人职责、技术方案和形成结果。重点不是“用了什么”，而是“为什么这样做”。</p>
+      </div>
     </div>
-    <div class="project-grid">
+
+    <div class="project-list">
       {projects.map((project, index) => (
-        <article class:list={['project-card', { supplemental: index === projects.length - 1 }]} data-project>
-          <div class="project-head">
-            <span class="project-number">PROJECT / 0{index + 1}</span>
-            <span class="status"><i aria-hidden="true"></i>{project.status}</span>
+        <article
+          class="project-case"
+          data-project
+          data-reveal
+          data-featured={index === 0 ? 'true' : 'false'}
+          data-tone={projectTones[index]}
+        >
+          <div class="project-visual" aria-hidden="true">
+            <span class="visual-number">0{index + 1}</span>
+            <span class="visual-mark">{projectMarks[index]}</span>
+            <span class="visual-status">{project.status}</span>
+            <div class="visual-orbit"></div>
+            <svg viewBox="0 0 180 180">
+              <path d="M22 145C68 153 134 113 145 37M114 54l31-17 6 35" />
+            </svg>
           </div>
-          <h3>{project.name}</h3>
-          <p class="project-summary">{project.summary}</p>
 
-          <dl class="project-closure">
-            <div>
-              <dt>业务场景</dt>
-              <dd>{project.problem}</dd>
+          <div class="project-content">
+            <div class="project-head">
+              <span>PROJECT / 0{index + 1}</span>
+              <span>{project.status}</span>
             </div>
-            <div>
-              <dt>我负责</dt>
-              <dd>{project.work}</dd>
-            </div>
-            <div>
-              <dt>技术方案</dt>
-              <dd>{project.solution}</dd>
-            </div>
-            <div class="result">
-              <dt>形成结果</dt>
-              <dd>{project.outcome}</dd>
-            </div>
-          </dl>
+            <h3>{project.name}</h3>
+            <p class="project-summary">{project.summary}</p>
 
-          <div class="project-footer">
-            <ul class="tag-list" aria-label={`${project.name}技术栈`}>
-              {project.technologies.map((technology) => <li>{technology}</li>)}
-            </ul>
-            {project.href && (
-              <a data-project-link href={project.href} target="_blank" rel="noreferrer">
-                查看项目 <span aria-hidden="true">↗</span>
-              </a>
-            )}
+            <dl class="project-closure">
+              <div>
+                <dt>业务场景</dt>
+                <dd>{project.problem}</dd>
+              </div>
+              <div>
+                <dt>我负责</dt>
+                <dd>{project.work}</dd>
+              </div>
+              <div>
+                <dt>技术方案</dt>
+                <dd>{project.solution}</dd>
+              </div>
+              <div class="result">
+                <dt>形成结果</dt>
+                <dd>{project.outcome}</dd>
+              </div>
+            </dl>
+
+            <div class="project-footer">
+              <ul class="tag-list" aria-label={`${project.name}技术栈`}>
+                {project.technologies.map((technology) => <li>{technology}</li>)}
+              </ul>
+              {project.href && (
+                <a data-project-link href={project.href} target="_blank" rel="noreferrer">
+                  查看项目 <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
           </div>
         </article>
       ))}
@@ -57,43 +82,154 @@ import { projects } from '../data/portfolio';
 </section>
 
 <style>
-  .section-heading-wide {
+  .projects {
+    background: var(--color-bg);
+  }
+
+  .project-heading > div:last-child p {
+    max-width: 42rem;
+    margin: 1.5rem 0 0;
+    color: var(--color-muted);
+    font-size: 1.08rem;
+  }
+
+  .project-count {
+    margin: 0;
+    color: var(--color-muted);
+    font: 650 0.78rem/1.55 var(--font-mono);
+  }
+
+  .project-list {
     display: grid;
-    grid-template-columns: 1fr minmax(18rem, 0.72fr);
-    gap: 2rem;
-    align-items: end;
+    gap: clamp(3rem, 8vw, 8rem);
   }
 
-  .section-heading-wide > p {
-    justify-self: end;
-    max-width: 34rem;
-  }
-
-  .project-grid {
+  .project-case {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.2rem;
-  }
-
-  .project-card {
-    display: flex;
+    grid-template-columns: minmax(18rem, 0.82fr) minmax(0, 1.18fr);
     min-width: 0;
-    overflow: hidden;
-    padding: clamp(1.35rem, 3vw, 2rem);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background:
-      linear-gradient(140deg, rgb(72 215 255 / 0.055), transparent 36%),
-      var(--color-surface);
-    box-shadow: 0 18px 60px rgb(0 0 0 / 0.08);
-    flex-direction: column;
+    border-top: 1px solid var(--color-dark);
   }
 
-  .project-card.supplemental {
-    grid-column: 1 / -1;
-    background:
-      linear-gradient(120deg, rgb(94 230 168 / 0.07), transparent 48%),
-      var(--color-surface);
+  .project-case:nth-child(even) {
+    grid-template-columns: minmax(0, 1.18fr) minmax(18rem, 0.82fr);
+  }
+
+  .project-case:nth-child(even) .project-visual {
+    grid-column: 2;
+  }
+
+  .project-case:nth-child(even) .project-content {
+    grid-column: 1;
+    grid-row: 1;
+    padding-left: 0;
+    padding-right: clamp(1.5rem, 6vw, 5rem);
+  }
+
+  .project-visual {
+    position: relative;
+    min-height: 34rem;
+    overflow: hidden;
+    background: var(--color-dark);
+    color: var(--color-on-dark);
+  }
+
+  .project-case[data-tone='lime'] .project-visual {
+    background: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .project-case[data-tone='paper'] .project-visual {
+    border: 1px solid var(--color-dark);
+    border-top: 0;
+    background: var(--color-paper);
+    color: var(--color-text);
+  }
+
+  .project-case[data-tone='gray'] .project-visual {
+    background: #d3d0c6;
+    color: var(--color-text);
+  }
+
+  .visual-number {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    font: 700 0.75rem/1 var(--font-mono);
+  }
+
+  .visual-mark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: clamp(4.2rem, 8vw, 8rem);
+    font-weight: 850;
+    letter-spacing: -0.085em;
+    line-height: 0.8;
+    white-space: nowrap;
+    transform: translate(-50%, -50%) rotate(-7deg);
+  }
+
+  .visual-status {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 2;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid currentColor;
+    font: 700 0.65rem/1 var(--font-mono);
+  }
+
+  .visual-orbit {
+    position: absolute;
+    top: 17%;
+    left: 15%;
+    width: 72%;
+    aspect-ratio: 1;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.55;
+    transform: rotate(19deg);
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .visual-orbit::before,
+  .visual-orbit::after {
+    position: absolute;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    content: '';
+  }
+
+  .visual-orbit::before {
+    inset: 13% -11%;
+  }
+
+  .visual-orbit::after {
+    inset: -11% 13%;
+  }
+
+  .project-case:hover .visual-orbit {
+    transform: rotate(34deg) scale(1.03);
+  }
+
+  .project-visual svg {
+    position: absolute;
+    right: -1.5rem;
+    bottom: -1.25rem;
+    width: 11rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+    opacity: 0.72;
+  }
+
+  .project-content {
+    min-width: 0;
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(1rem, 3vw, 2rem) clamp(1.5rem, 6vw, 5rem);
   }
 
   .project-head,
@@ -104,95 +240,141 @@ import { projects } from '../data/portfolio';
     gap: 1rem;
   }
 
-  .project-number {
-    color: var(--color-primary);
-    font: 800 0.72rem ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.09em;
-  }
-
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
+  .project-head {
     color: var(--color-muted);
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
-
-  .status i {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--color-secondary);
-    box-shadow: 0 0 0 0.25rem rgb(94 230 168 / 0.1);
+    font: 650 0.68rem/1 var(--font-mono);
+    letter-spacing: 0.05em;
   }
 
   h3 {
-    max-width: 18em;
-    margin: 1.4rem 0 0;
-    font-size: clamp(1.55rem, 3vw, 2.2rem);
-    letter-spacing: -0.04em;
-    line-height: 1.2;
+    max-width: 100%;
+    margin: 1.2rem 0 0;
+    font-size: clamp(2.1rem, 4.3vw, 3.8rem);
+    letter-spacing: -0.065em;
+    line-height: 0.98;
+    overflow-wrap: anywhere;
   }
 
   .project-summary {
-    margin: 0.7rem 0 0;
+    max-width: 42rem;
+    margin: 1.15rem 0 0;
     color: var(--color-muted);
-    font-size: 0.98rem;
+    font-size: 1.02rem;
   }
 
   .project-closure {
     display: grid;
-    gap: 0;
-    margin: 1.6rem 0 0;
+    margin: 2rem 0 0;
   }
 
   .project-closure > div {
     display: grid;
-    grid-template-columns: 5rem minmax(0, 1fr);
-    gap: 0.9rem;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: 1rem;
     padding-block: 0.85rem;
     border-top: 1px solid var(--color-border);
   }
 
   dt {
-    color: var(--color-primary);
-    font-size: 0.78rem;
-    font-weight: 800;
+    font-size: 0.76rem;
+    font-weight: 850;
   }
 
   dd {
+    min-width: 0;
     margin: 0;
-    color: color-mix(in srgb, var(--color-text) 90%, var(--color-muted));
     font-size: 0.9rem;
+    overflow-wrap: anywhere;
   }
 
-  .result dd { color: var(--color-text); font-weight: 650; }
+  .result {
+    margin-top: 0.2rem;
+    padding-inline: 0.75rem;
+    border-top-color: var(--color-dark) !important;
+    background: var(--color-accent);
+  }
+
+  .result dd {
+    font-weight: 700;
+  }
 
   .project-footer {
-    margin-top: auto;
-    padding-top: 1.5rem;
+    align-items: flex-end;
+    margin-top: 1.25rem;
   }
 
-  .project-footer .tag-list { margin: 0; }
+  .project-footer .tag-list {
+    margin: 0;
+  }
 
   .project-footer a {
     flex: 0 0 auto;
-    color: var(--color-primary);
-    font-size: 0.86rem;
+    min-height: 2.75rem;
+    font-size: 0.85rem;
     font-weight: 800;
-    text-decoration: none;
   }
 
-  @media (max-width: 860px) {
-    .section-heading-wide { grid-template-columns: 1fr; }
-    .section-heading-wide > p { justify-self: start; }
-    .project-grid { grid-template-columns: 1fr; }
-    .project-card.supplemental { grid-column: auto; }
+  @media (max-width: 900px) {
+    .project-case,
+    .project-case:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+
+    .project-case:nth-child(even) .project-visual,
+    .project-case:nth-child(even) .project-content {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .project-content,
+    .project-case:nth-child(even) .project-content {
+      padding: 2rem 0 0;
+    }
+
+    .project-visual {
+      min-height: 27rem;
+    }
+  }
+
+  @container (max-width: 60rem) {
+    .project-case,
+    .project-case:nth-child(even) {
+      grid-template-columns: 1fr;
+    }
+
+    .project-case:nth-child(even) .project-visual,
+    .project-case:nth-child(even) .project-content {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .project-content,
+    .project-case:nth-child(even) .project-content {
+      padding: 2rem 0 0;
+    }
+
+    .project-visual {
+      min-height: 27rem;
+    }
   }
 
   @media (max-width: 520px) {
-    .project-closure > div { grid-template-columns: 1fr; gap: 0.25rem; }
-    .project-footer { align-items: flex-start; flex-direction: column; }
+    .project-visual {
+      min-height: 20rem;
+    }
+
+    .visual-mark {
+      font-size: clamp(3.5rem, 18vw, 5rem);
+    }
+
+    .project-closure > div {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .project-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 </style>

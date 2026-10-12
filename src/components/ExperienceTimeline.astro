@@ -2,26 +2,35 @@
 import { experience } from '../data/portfolio';
 ---
 
-<section id="experience" class="section" aria-labelledby="experience-title">
+<section id="experience" class="section experience" aria-labelledby="experience-title">
   <div class="container experience-layout">
-    <div class="section-heading sticky-heading">
+    <div class="experience-intro" data-reveal>
       <p class="section-kicker">02 / EXPERIENCE</p>
-      <h2 id="experience-title">工作经历</h2>
-      <p>不只罗列参与过什么，更说明我负责的业务、采用的方案与形成的结果。</p>
+      <h2 id="experience-title">真实业务<br />如何落地。</h2>
+      <p>不只写“参与开发”，而是讲清楚我负责什么、解决什么问题，以及最终形成什么结果。</p>
+      <div class="experience-stamp" aria-hidden="true">
+        <span>7+</span>
+        <small>MONTHS OF<br />DELIVERY</small>
+      </div>
     </div>
+
     <div class="timeline">
-      {experience.map((item) => (
-        <article class="experience-card" data-experience>
-          <div class="timeline-dot" aria-hidden="true"></div>
-          <p class="period">{item.period}</p>
+      {experience.map((item, index) => (
+        <article class="experience-entry" data-experience data-reveal>
+          <div class="entry-head">
+            <p class="period">{item.period}</p>
+            <span>ROLE / 0{index + 1}</span>
+          </div>
           <h3>{item.company}</h3>
           <p class="role">{item.role}</p>
           <p class="summary">{item.summary}</p>
-          <ul>
-            {item.bullets.map((bullet) => <li>{bullet}</li>)}
-          </ul>
+          <ol>
+            {item.bullets.map((bullet, bulletIndex) => (
+              <li><span>0{bulletIndex + 1}</span><p>{bullet}</p></li>
+            ))}
+          </ol>
           <div class="outcome">
-            <span>交付结果</span>
+            <span>DELIVERED</span>
             <p>{item.outcome}</p>
           </div>
         </article>
@@ -31,122 +40,198 @@ import { experience } from '../data/portfolio';
 </section>
 
 <style>
+  .experience {
+    background: var(--color-dark);
+    color: var(--color-on-dark);
+  }
+
   .experience-layout {
     display: grid;
-    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
-    gap: clamp(2rem, 8vw, 7rem);
+    grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(3rem, 9vw, 8rem);
     align-items: start;
   }
 
-  .sticky-heading { position: sticky; top: 7rem; }
+  .experience-intro {
+    position: sticky;
+    top: 4rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 850;
+    letter-spacing: -0.075em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .experience-intro > p:not(.section-kicker) {
+    max-width: 28rem;
+    margin: 1.75rem 0 0;
+    color: #b8b6ad;
+  }
+
+  .experience-stamp {
+    display: flex;
+    width: 10.5rem;
+    aspect-ratio: 1;
+    margin-top: 3rem;
+    border: 1px solid #77756e;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transform: rotate(-8deg);
+  }
+
+  .experience-stamp span {
+    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    font-weight: 850;
+    line-height: 1;
+  }
+
+  .experience-stamp small {
+    font: 600 0.58rem/1.4 var(--font-mono);
+    letter-spacing: 0.04em;
+  }
 
   .timeline {
-    position: relative;
-    display: grid;
-    gap: 1.25rem;
-    padding-left: 2rem;
-  }
-
-  .timeline::before {
-    position: absolute;
-    top: 0.75rem;
-    bottom: 0.75rem;
-    left: 0.4rem;
-    width: 1px;
-    background: linear-gradient(var(--color-primary), var(--color-secondary));
-    content: '';
-  }
-
-  .experience-card {
-    position: relative;
     min-width: 0;
-    padding: clamp(1.4rem, 4vw, 2.2rem);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
+    border-top: 1px solid #5a5953;
   }
 
-  .timeline-dot {
-    position: absolute;
-    top: 2rem;
-    left: -2.1rem;
-    width: 1rem;
-    height: 1rem;
-    border: 0.25rem solid var(--color-bg);
-    border-radius: 50%;
-    background: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary);
+  .experience-entry {
+    min-width: 0;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    border-bottom: 1px solid #5a5953;
+  }
+
+  .entry-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .period,
+  .entry-head > span,
+  .role {
+    margin: 0;
+    font: 650 0.7rem/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
   }
 
   .period,
   .role {
-    margin: 0;
-    color: var(--color-primary);
-    font: 750 0.78rem ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.06em;
+    color: var(--color-accent);
+  }
+
+  .entry-head > span {
+    color: #949188;
   }
 
   h3 {
-    margin: 0.75rem 0 0.15rem;
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    letter-spacing: -0.035em;
+    max-width: 18em;
+    margin: 1.2rem 0 0.35rem;
+    font-size: clamp(1.9rem, 4vw, 3.25rem);
+    letter-spacing: -0.05em;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
   }
-
-  .role { color: var(--color-secondary); }
 
   .summary {
-    margin: 1.25rem 0 0;
-    color: var(--color-muted);
+    max-width: 42rem;
+    margin: 1.5rem 0 0;
+    color: #c9c6bc;
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
   }
 
-  ul {
+  ol {
     display: grid;
-    gap: 0.7rem;
-    margin: 1.5rem 0 0;
+    gap: 0;
+    margin: 2rem 0 0;
     padding: 0;
+    border-top: 1px solid #41403c;
     list-style: none;
   }
 
   li {
-    position: relative;
-    padding-left: 1.25rem;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid #41403c;
   }
 
-  li::before {
-    position: absolute;
-    top: 0.68rem;
-    left: 0;
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 50%;
-    background: var(--color-secondary);
-    content: '';
+  li span {
+    padding-top: 0.18rem;
+    color: #8f8c84;
+    font: 600 0.62rem/1 var(--font-mono);
+  }
+
+  li p {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
   }
 
   .outcome {
-    margin-top: 1.6rem;
-    padding: 1rem 1.1rem;
-    border-left: 3px solid var(--color-primary);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    background: var(--color-surface-raised);
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
   }
 
   .outcome span {
-    color: var(--color-primary);
-    font-size: 0.78rem;
-    font-weight: 800;
+    padding-top: 0.2rem;
+    font: 800 0.65rem/1 var(--font-mono);
+    letter-spacing: 0.08em;
   }
 
-  .outcome p { margin: 0.35rem 0 0; }
+  .outcome p {
+    margin: 0;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
 
-  @media (max-width: 800px) {
-    .experience-layout { grid-template-columns: 1fr; gap: 2rem; }
-    .sticky-heading { position: static; }
+  @media (max-width: 820px) {
+    .experience-layout {
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .experience-intro {
+      position: static;
+    }
+  }
+
+  @container (max-width: 60rem) {
+    .experience-layout {
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .experience-intro {
+      position: static;
+    }
   }
 
   @media (max-width: 520px) {
-    .timeline { padding-left: 1.15rem; }
-    .timeline::before { left: 0.15rem; }
-    .timeline-dot { left: -1.35rem; }
+    .experience-stamp {
+      width: 8.5rem;
+    }
+
+    .outcome {
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+    }
   }
 </style>

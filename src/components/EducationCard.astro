@@ -2,152 +2,240 @@
 import { education, profile } from '../data/portfolio';
 ---
 
-<section id="contact" class="section" aria-labelledby="contact-title">
-  <div class="container contact-grid">
-    <article class="education-card">
-      <p class="section-kicker">05 / EDUCATION</p>
-      <h2>教育与荣誉</h2>
-      <p class="period">{education.period}</p>
-      <h3>{education.school}</h3>
-      <p>{education.degree} · {education.ranking}</p>
-      <ul class="tag-list" aria-label="核心课程">
-        {education.courses.map((course) => <li>{course}</li>)}
-      </ul>
-      <div class="award">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 4h8v5a4 4 0 0 1-8 0V4Zm0 2H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4m-4 1v4m-3 3h6" />
-        </svg>
-        <div><span>竞赛荣誉</span><strong>{education.award}</strong></div>
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="education" data-reveal>
+      <div>
+        <p class="section-kicker">05 / EDUCATION</p>
+        <p class="period">{education.period}</p>
       </div>
-    </article>
+      <div>
+        <h2>教育与荣誉</h2>
+        <h3>{education.school}</h3>
+        <p>{education.degree} · {education.ranking}</p>
+      </div>
+      <div class="education-detail">
+        <ul class="tag-list" aria-label="核心课程">
+          {education.courses.map((course) => <li>{course}</li>)}
+        </ul>
+        <div class="award">
+          <span>AWARD</span>
+          <strong>{education.award}</strong>
+        </div>
+      </div>
+    </div>
 
-    <article class="contact-card">
-      <p class="section-kicker">06 / CONTACT</p>
-      <h2 id="contact-title">一起把想法变成<br />可交付的产品。</h2>
-      <p>关注 AI 应用、Java/Python 全栈与真实业务闭环，欢迎通过邮箱或 GitHub 联系。</p>
-      <div class="contact-actions">
-        <a class="button button-primary" href={`mailto:${profile.email}`}>发送邮件</a>
-        <a class="button button-secondary" href={profile.github} target="_blank" rel="noreferrer">访问 GitHub</a>
-        <a class="button button-ghost" href={profile.resume} download>下载简历</a>
+    <div class="contact-panel" data-reveal>
+      <div class="contact-copy">
+        <p class="section-kicker">06 / CONTACT</p>
+        <h2 id="contact-title">一起做点<br /><em>真正能用的。</em></h2>
+        <p>关注 AI 应用、Java/Python 全栈与真实业务闭环，欢迎通过邮箱或 GitHub 联系。</p>
       </div>
-      <dl>
-        <div><dt>EMAIL</dt><dd>{profile.email}</dd></div>
-        <div><dt>BASE</dt><dd>{profile.location}</dd></div>
-        <div><dt>STATUS</dt><dd>{profile.availability}</dd></div>
-      </dl>
-    </article>
+      <div class="contact-side">
+        <div class="contact-actions">
+          <a class="contact-link" href={`mailto:${profile.email}`}>
+            <span>发送邮件</span><strong aria-hidden="true">↗</strong>
+          </a>
+          <a class="contact-link" href={profile.github} target="_blank" rel="noreferrer">
+            <span>访问 GitHub</span><strong aria-hidden="true">↗</strong>
+          </a>
+          <a class="contact-link" href={profile.resume} download>
+            <span>下载简历</span><strong aria-hidden="true">↓</strong>
+          </a>
+        </div>
+        <dl>
+          <div><dt>EMAIL</dt><dd>{profile.email}</dd></div>
+          <div><dt>BASE</dt><dd>{profile.location}</dd></div>
+          <div><dt>STATUS</dt><dd>{profile.availability}</dd></div>
+        </dl>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .contact-grid {
+  .contact {
+    padding-bottom: 0;
+    background: var(--color-paper);
+  }
+
+  .education {
     display: grid;
-    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-    gap: 1.2rem;
-  }
-
-  article {
-    min-width: 0;
-    padding: clamp(1.5rem, 4vw, 2.5rem);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-  }
-
-  h2 {
-    margin: 0;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    letter-spacing: -0.05em;
-    line-height: 1.08;
+    grid-template-columns: minmax(9rem, 0.35fr) minmax(18rem, 0.9fr) minmax(17rem, 0.7fr);
+    gap: clamp(1.5rem, 5vw, 5rem);
+    padding-bottom: clamp(5rem, 10vw, 9rem);
+    align-items: start;
   }
 
   .period {
-    margin: 2.2rem 0 0;
-    color: var(--color-primary);
-    font: 800 0.78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    margin: 2rem 0 0;
+    font: 700 0.75rem/1.4 var(--font-mono);
   }
 
-  h3 { margin: 0.5rem 0 0; font-size: 1.35rem; }
+  .education h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+  }
 
-  .education-card > p:not(.period, .section-kicker),
-  .contact-card > p {
+  .education h3 {
+    margin: 2rem 0 0;
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .education h3 + p {
+    margin: 0.4rem 0 0;
     color: var(--color-muted);
   }
 
+  .education-detail {
+    padding-top: 0.4rem;
+  }
+
+  .education-detail .tag-list {
+    margin-top: 0;
+  }
+
   .award {
-    display: flex;
-    gap: 0.85rem;
-    margin-top: 1.8rem;
-    padding: 1rem;
-    border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, var(--color-border));
-    border-radius: var(--radius-sm);
-    background: rgb(94 230 168 / 0.055);
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-dark);
+    background: var(--color-accent);
+    box-shadow: 6px 6px 0 var(--color-dark);
+    transform: rotate(1.5deg);
   }
 
-  .award svg {
-    flex: 0 0 auto;
-    width: 1.6rem;
-    color: var(--color-secondary);
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.7;
+  .award span {
+    font: 700 0.65rem/1 var(--font-mono);
+    letter-spacing: 0.08em;
   }
 
-  .award span,
-  .award strong { display: block; }
-  .award span { color: var(--color-muted); font-size: 0.75rem; }
-  .award strong { margin-top: 0.15rem; }
-
-  .contact-card {
-    background:
-      radial-gradient(circle at 100% 0%, rgb(72 215 255 / 0.16), transparent 20rem),
-      var(--color-surface);
+  .award strong {
+    line-height: 1.4;
   }
 
-  .contact-card > p { max-width: 38rem; }
+  .contact-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+    gap: clamp(3rem, 9vw, 8rem);
+    padding: clamp(2rem, 6vw, 5rem);
+    background: var(--color-dark);
+    color: var(--color-on-dark);
+  }
+
+  .contact-copy h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.6rem, 8vw, 7.7rem);
+    font-weight: 850;
+    letter-spacing: -0.085em;
+    line-height: 0.84;
+  }
+
+  .contact-copy h2 em {
+    color: var(--color-accent);
+    font-style: normal;
+  }
+
+  .contact-copy > p:last-child {
+    max-width: 36rem;
+    margin: 2rem 0 0;
+    color: #bab7ae;
+  }
+
+  .contact-side {
+    align-self: end;
+  }
 
   .contact-actions {
+    border-top: 1px solid #77756e;
+  }
+
+  .contact-link {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    margin-top: 1.8rem;
+    min-height: 4.25rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid #77756e;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-weight: 750;
+    text-decoration: none;
+    transition: padding var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-link:hover {
+    padding-inline: 0.65rem;
+    color: var(--color-accent);
+  }
+
+  .contact-link strong {
+    font-size: 1.4rem;
   }
 
   dl {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
     margin: 2.4rem 0 0;
   }
 
   dl div {
     min-width: 0;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--color-border);
+  }
+
+  dl div:first-child {
+    grid-column: 1 / -1;
   }
 
   dt {
-    color: var(--color-primary);
-    font: 800 0.66rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #8e8b84;
+    font: 700 0.6rem/1 var(--font-mono);
     letter-spacing: 0.08em;
   }
 
   dd {
-    margin: 0.3rem 0 0;
+    margin: 0.4rem 0 0;
     overflow-wrap: anywhere;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 650;
   }
 
-  @media (max-width: 820px) {
-    .contact-grid { grid-template-columns: 1fr; }
+  @media (max-width: 850px) {
+    .education,
+    .contact-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .education-detail {
+      max-width: 32rem;
+    }
+  }
+
+  @container (max-width: 60rem) {
+    .education,
+    .contact-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .education-detail {
+      max-width: 32rem;
+    }
   }
 
   @media (max-width: 520px) {
-    .contact-actions { flex-direction: column; }
-    .button { width: 100%; }
-    dl { grid-template-columns: 1fr; }
+    .contact-panel {
+      margin-inline: -0.625rem;
+    }
+
+    dl {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
   }
 </style>

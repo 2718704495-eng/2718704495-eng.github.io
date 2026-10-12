@@ -4,39 +4,50 @@ import { profile } from '../data/portfolio';
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>© {new Date().getFullYear()} {profile.name} · 用工程证据完成每一次交付。</p>
+    <p>© {new Date().getFullYear()} {profile.name}</p>
+    <p>AI APPLICATION · JAVA / PYTHON FULL STACK</p>
     <a href="#about">返回顶部 <span aria-hidden="true">↑</span></a>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--color-border);
-    color: var(--color-muted);
+    padding-block: 1.5rem;
+    background: var(--color-dark);
+    color: #9e9b93;
   }
 
   .footer-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     gap: 1rem;
-    min-height: 7rem;
+    align-items: center;
   }
 
-  .site-footer p {
+  p {
     margin: 0;
+    font: 600 0.64rem/1.4 var(--font-mono);
+    letter-spacing: 0.05em;
   }
 
-  .site-footer a {
-    flex: 0 0 auto;
-    font-weight: 700;
+  p:nth-child(2) {
+    text-align: center;
   }
 
-  @media (max-width: 560px) {
+  a {
+    justify-self: end;
+    color: var(--color-on-dark);
+    font-size: 0.78rem;
+    font-weight: 750;
+  }
+
+  @media (max-width: 700px) {
     .footer-inner {
-      align-items: flex-start;
-      flex-direction: column;
-      justify-content: center;
+      grid-template-columns: 1fr auto;
+    }
+
+    p:nth-child(2) {
+      display: none;
     }
   }
 </style>
