@@ -1,279 +1,235 @@
-# Personal Portfolio Implementation Plan
+# 个人技术作品集实施计划
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> 执行要求：实施时使用 superpowers:executing-plans，按照下面的复选框逐项完成和验证。
 
-**Goal:** Build and publish a recruiter-focused personal portfolio for 王晓磊 at `https://2718704495-eng.github.io/`.
+**目标：** 为王晓磊制作一套面向招聘者的个人技术作品集，并发布到 https://2718704495-eng.github.io/ 。
 
-**Architecture:** Retain the Astro/TypeScript foundation and accessibility patterns from `floating-astronaut/astro-portfolio-template`, but replace its scroll-film presentation with a lightweight static single-page narrative. Keep all resume facts in typed data modules, render them through focused Astro components, and deploy the generated `dist/` directory with GitHub Actions.
+**实现方式：** 以 floating-astronaut/astro-portfolio-template 的 Astro、TypeScript、无障碍和 SEO 基础为起点，去掉原模板较重的视频滚动效果，改成轻量、清晰的单页作品集。简历数据集中保存在类型化配置中，各页面模块读取这些数据进行展示，最后由 GitHub Actions 自动构建并发布到 GitHub Pages。
 
-**Tech Stack:** Astro 7, TypeScript 6, CSS, Vitest, Playwright, GitHub Actions, GitHub Pages
+**主要技术：** Astro 7、TypeScript 6、CSS、Vitest、Playwright、GitHub Actions、GitHub Pages
 
-**Spec:** `docs/superpowers/specs/2026-10-12-personal-portfolio-design.md`
+**设计规格：** docs/superpowers/specs/2026-10-12-personal-portfolio-design.md
 
-## Global Constraints
+## 全局要求
 
-- Primary audience is recruiters and technical interviewers; every section must be scannable without opening a modal.
-- Use deep ink/navy surfaces with cyan and green accents; keep motion subtle and honor `prefers-reduced-motion`.
-- Do not add unconfirmed traffic, concurrency, latency, percentage, customer, or revenue claims.
-- The first version has no blog, login, database, analytics, contact form, or runtime third-party API.
-- Preserve the upstream MIT license and record the source template in `README.md`.
-- Public contact data is limited to GitHub and the confirmed resume email; never publish phone, home address, secrets, or tokens.
-- The production URL is `https://2718704495-eng.github.io/` and deployment targets the public `2718704495-eng/2718704495-eng.github.io` repository.
+- 网站主要给招聘者和技术面试官看，重要信息不放在弹窗或隐藏页面中。
+- 使用深墨蓝背景与青蓝、绿色强调色，动画保持克制，并支持“减少动态效果”。
+- 不编造访问量、并发量、响应时间、提升百分比、客户数量或收入数据。
+- 第一版不做博客、登录、数据库、访问统计和联系表单。
+- 保留原模板的 MIT 开源许可，并在 README 中注明模板来源。
+- 公开联系方式只保留 GitHub 和简历中的邮箱，不公开电话、住址、密钥或令牌。
+- 最终仓库为公开仓库 2718704495-eng/2718704495-eng.github.io。
 
-## Review Focus
+## 重点检查项目
 
-- JavaScript disabled or reduced motion enabled: all sections remain visible and navigable; covered by Task 2 Playwright tests.
-- Small mobile viewport: navigation, project cards, timeline, and long technology names do not overflow; covered by Task 3 Playwright tests.
-- Missing optional project URL: the card renders without an empty or broken link; covered by Task 1 unit tests.
-- Placeholder/demo content from the template: build fails when forbidden strings or example links remain; covered by Task 4 audits.
-- GitHub Pages root deployment: generated links and assets use root-safe URLs and the workflow publishes `dist/`; covered by Task 4 build and workflow checks.
+- 禁用 JavaScript 或开启“减少动画”后，所有简历内容仍然可见。
+- 手机屏幕下导航、项目卡片、时间线和较长技术名称不能超出页面。
+- 没有 GitHub 地址的项目不显示空按钮或错误链接。
+- 页面中不能残留原模板姓名、示例项目、example.com 等演示内容。
+- GitHub Pages 构建完成后，首页、图片和 PDF 简历都能通过根路径正常访问。
 
 ---
 
-### Task 1: Import the template foundation and define verified portfolio content
+## 第一阶段：建立项目并整理简历数据
 
-**Files:**
-- Create: `package.json`
-- Create: `package-lock.json`
-- Create: `astro.config.mjs`
-- Create: `tsconfig.json`
-- Create: `vitest.config.ts`
-- Create: `src/env.d.ts`
-- Create: `src/data/portfolio.ts`
-- Create: `tests/unit/portfolio-content.test.ts`
-- Create: `LICENSE`
-- Create: `.gitignore`
+### 要做什么
 
-**Interfaces:**
-- Produces: `profile: Profile`, `capabilities: Capability[]`, `experience: Experience[]`, `projects: Project[]`, `workflow: WorkflowStep[]`, `education: Education` from `src/data/portfolio.ts`.
-- `Project` contains `name`, `status`, `summary`, `problem`, `work`, `solution`, `outcome`, `technologies`, and optional `href`.
-- Later tasks consume these exported objects without embedding resume copy inside components.
+1. 引入 Astro 项目基础、TypeScript 配置、测试配置和 MIT 许可证。
+2. 删除原模板的视频、演示项目、统计代码和联系表单。
+3. 建立统一的简历数据文件，保存个人信息、能力、经历、项目、AI 工作流和教育信息。
+4. 先写数据检查，防止项目漏字段或混入演示内容。
 
-- [ ] **Step 1: Write content-contract tests**
+### 主要文件
 
-Add tests asserting the four named projects exist, two experiences exist, every project has the five narrative fields, optional `href` may be absent, contact data excludes phone/address, and no forbidden placeholder values occur.
+- package.json：项目依赖和运行命令。
+- astro.config.mjs：Astro 与网站地址配置。
+- src/data/portfolio.ts：全部简历与项目数据。
+- tests/unit/portfolio-content.test.ts：简历数据检查。
+- LICENSE：保留上游模板的 MIT 许可。
 
-- [ ] **Step 2: Run the unit test and verify it fails**
+### 数据结构
 
-Run: `npm run test:unit -- tests/unit/portfolio-content.test.ts`
+portfolio.ts 将导出：
 
-Expected: FAIL because `src/data/portfolio.ts` does not exist.
+- profile：姓名、定位、简介、GitHub、邮箱和求职状态。
+- capabilities：四项核心能力。
+- experience：两段工作/实习经历。
+- projects：四个重点项目。
+- workflow：六步 AI 原生开发流程。
+- education：学校、专业、排名和获奖信息。
 
-- [ ] **Step 3: Import the minimal Astro template foundation**
+每个项目都必须包含：项目名称、状态、简介、业务问题、本人工作、解决方案、项目结果、技术栈和可选项目链接。
 
-Copy the upstream package/config/license files without its `.git`, demo media, analytics, contact form, or scroll-film assets. Keep the upstream MIT notice.
+### 验证方式
 
-- [ ] **Step 4: Implement the typed content module**
+- [ ] 先写测试，确认没有数据文件时测试会失败。
+- [ ] 完成数据文件后运行：
+  - npm install
+  - npm run test:unit -- tests/unit/portfolio-content.test.ts
+- [ ] 预期结果：四个项目、两段经历和全部必要字段检查通过。
+- [ ] 完成后提交一次 Git 记录。
 
-Populate the exact approved profile, capabilities, work history, four projects, AI workflow, education, award, GitHub URL, and email in `src/data/portfolio.ts`.
+---
 
-- [ ] **Step 5: Install dependencies and run the unit test**
+## 第二阶段：搭建页面外观、导航和基础结构
 
-Run: `npm install && npm run test:unit -- tests/unit/portfolio-content.test.ts`
+### 要做什么
 
-Expected: PASS with all portfolio content contracts satisfied.
+1. 制作网页基础布局、悬浮导航和页脚。
+2. 建立颜色、字号、间距、圆角和动画变量。
+3. 添加“跳到正文”、键盘焦点和移动端导航。
+4. 创建首页的全部导航位置：个人介绍、工作经历、项目、AI 工作流和联系区域。
 
-- [ ] **Step 6: Commit the content foundation**
+### 主要文件
 
-```bash
-git add package.json package-lock.json astro.config.mjs tsconfig.json vitest.config.ts src/env.d.ts src/data/portfolio.ts tests/unit/portfolio-content.test.ts LICENSE .gitignore
-git commit -m "feat: add typed portfolio content foundation"
-```
+- src/layouts/Base.astro：HTML、SEO 和页面公共外壳。
+- src/components/SiteNav.astro：桌面与手机导航。
+- src/components/SiteFooter.astro：页脚。
+- src/styles/tokens.css：颜色和尺寸变量。
+- src/styles/global.css：全站样式和响应式布局。
+- src/pages/index.astro：首页入口。
+- tests/e2e/shell.spec.ts：导航、键盘和无脚本测试。
 
-### Task 2: Build the accessible visual shell and navigation
+### 页面效果
 
-**Files:**
-- Create: `src/layouts/Base.astro`
-- Create: `src/components/SiteNav.astro`
-- Create: `src/components/SiteFooter.astro`
-- Create: `src/styles/tokens.css`
-- Create: `src/styles/global.css`
-- Create: `src/pages/index.astro`
-- Create: `public/favicon.svg`
-- Create: `tests/e2e/shell.spec.ts`
-- Create: `playwright.config.ts`
+- 深墨蓝背景，局部青蓝和绿色光晕。
+- 顶部悬浮胶囊导航。
+- 轻量网格作为背景装饰。
+- 内容滚动时轻微淡入，不使用视频或粒子动画。
+- 手机端自动变为紧凑导航，正文保持单列阅读。
 
-**Interfaces:**
-- Consumes: `profile` from Task 1.
-- Produces: page landmarks and section anchors `#about`, `#experience`, `#projects`, `#workflow`, and `#contact`.
-- `Base.astro` accepts `title`, `description`, and optional Open Graph image.
+### 验证方式
 
-- [ ] **Step 1: Write shell accessibility tests**
+- [ ] 先写导航和无障碍测试，确认页面未实现时测试失败。
+- [ ] 完成页面外壳后运行：
+  - npm run check
+  - npx playwright test tests/e2e/shell.spec.ts
+- [ ] 预期结果：主内容区域、跳转链接、键盘焦点、禁用 JavaScript 和减少动画检查全部通过。
+- [ ] 完成后提交一次 Git 记录。
 
-Assert one `main` landmark, a skip link, working anchor navigation, keyboard-visible focus, content visibility with JavaScript disabled, and visible content with reduced motion enabled.
+---
 
-- [ ] **Step 2: Run the shell tests and verify they fail**
+## 第三阶段：完成全部简历与项目内容
 
-Run: `npx playwright test tests/e2e/shell.spec.ts`
+### 要做什么
 
-Expected: FAIL because the page and preview server are not implemented.
+1. 制作首屏个人介绍和三个按钮：查看项目、下载简历、GitHub。
+2. 制作四张核心能力卡片。
+3. 用时间线展示两段工作经历。
+4. 用项目卡片展示四个项目及其完整业务闭环。
+5. 展示六步 AI 原生开发流程。
+6. 展示教育、获奖、GitHub、邮箱和简历下载。
 
-- [ ] **Step 3: Implement the base layout, navigation, footer, and design tokens**
+### 主要文件
 
-Use semantic landmarks, root-safe asset paths, a floating pill navigation, responsive mobile menu without external UI libraries, and CSS-only decorative grid/glow layers.
+- src/components/Hero.astro：首屏介绍。
+- src/components/CapabilityGrid.astro：核心能力。
+- src/components/ExperienceTimeline.astro：工作时间线。
+- src/components/ProjectGrid.astro：项目卡片。
+- src/components/WorkflowSteps.astro：AI 工作流。
+- src/components/EducationCard.astro：教育与荣誉。
+- tests/e2e/content.spec.ts：内容检查。
+- tests/e2e/responsive.spec.ts：电脑和手机布局检查。
 
-- [ ] **Step 4: Implement the first-page skeleton**
+### 网站中展示的项目
 
-Add every required section anchor and placeholder-free headings while leaving section bodies to Task 3.
+1. 医疗智能导诊 Agent。
+2. 神州打卡绘微信小程序。
+3. 微信 AI 聊天助手。
+4. 文博元宇宙数字人交互系统。
 
-- [ ] **Step 5: Run shell tests and Astro checks**
+每个项目按照以下顺序展示：
 
-Run: `npm run check && npx playwright test tests/e2e/shell.spec.ts`
+业务场景 → 我负责什么 → 技术与解决方案 → 形成的结果 → 技术标签 → GitHub/演示链接
 
-Expected: PASS.
+### 验证方式
 
-- [ ] **Step 6: Commit the visual shell**
+- [ ] 检查首屏文案、四项能力、两段经历、四个项目、六步工作流和教育信息。
+- [ ] 检查 390×844 手机尺寸和 1440×900 桌面尺寸没有横向滚动或文字遮挡。
+- [ ] 运行：
+  - npm run test:unit
+  - npm run check
+  - npx playwright test tests/e2e/content.spec.ts tests/e2e/responsive.spec.ts
+- [ ] 预期结果：内容、链接和响应式布局检查全部通过。
+- [ ] 完成后提交一次 Git 记录。
 
-```bash
-git add src/layouts src/components/SiteNav.astro src/components/SiteFooter.astro src/styles src/pages/index.astro public/favicon.svg tests/e2e/shell.spec.ts playwright.config.ts
-git commit -m "feat: build accessible portfolio shell"
-```
+---
 
-### Task 3: Render the complete recruiter narrative
+## 第四阶段：加入 PDF 简历、SEO 和自动部署
 
-**Files:**
-- Create: `src/components/Hero.astro`
-- Create: `src/components/CapabilityGrid.astro`
-- Create: `src/components/ExperienceTimeline.astro`
-- Create: `src/components/ProjectGrid.astro`
-- Create: `src/components/WorkflowSteps.astro`
-- Create: `src/components/EducationCard.astro`
-- Modify: `src/pages/index.astro`
-- Modify: `src/styles/global.css`
-- Create: `tests/e2e/content.spec.ts`
-- Create: `tests/e2e/responsive.spec.ts`
+### 要做什么
 
-**Interfaces:**
-- Consumes all Task 1 data exports and Task 2 anchors/tokens.
-- Produces visible recruiter-facing sections; `ProjectGrid.astro` omits the link control when `project.href` is undefined.
+1. 把桌面上的最新版简历 /Users/wxl/Desktop/王晓磊-AI应用-全栈工程师.pdf 放进网站供下载。
+2. 添加网站标题、描述、分享卡片、Person 结构化数据、favicon、sitemap 和 robots。
+3. 添加演示内容与错误链接扫描脚本。
+4. 添加 GitHub Pages 自动部署工作流。
+5. 编写中文 README，说明网站、开发命令和模板来源。
 
-- [ ] **Step 1: Write content and responsive tests**
+### 主要文件
 
-Assert the approved hero copy, four capability cards, two experience entries, four project names, six AI workflow steps, education/award text, valid GitHub link, resume link, and no horizontal overflow at 390×844 and 1440×900.
+- public/resume/wang-xiaolei-ai-fullstack.pdf：可下载简历。
+- public/robots.txt、public/site.webmanifest、public/og-card.svg：网站元数据。
+- scripts/content-audit.mjs：检查演示文案和必需文件。
+- scripts/link-audit.mjs：检查链接。
+- .github/workflows/pages.yml：GitHub Pages 自动部署。
+- README.md：项目说明。
 
-- [ ] **Step 2: Run the content tests and verify they fail**
+### 自动部署流程
 
-Run: `npx playwright test tests/e2e/content.spec.ts tests/e2e/responsive.spec.ts`
+每次向 main 分支推送代码时，GitHub Actions 将自动执行：
 
-Expected: FAIL because the content components do not exist.
+安装依赖 → 单元测试 → Astro 类型检查 → 内容检查 → 生产构建 → 上传 dist → 发布 GitHub Pages
 
-- [ ] **Step 3: Implement Hero and capability components**
+### 验证方式
 
-Render the approved positioning, availability chips, calls to action, and four evidence-oriented capability cards.
+- [ ] 先写审计测试，确保残留模板文案、空链接或缺少 PDF 时会失败。
+- [ ] 完成后运行完整发布前检查：
+  - npm run test:unit
+  - npm run check
+  - npm run build
+  - npm run audit
+  - npx playwright test
+- [ ] 预期结果：全部命令通过，dist/index.html 和 PDF 简历均存在。
+- [ ] 完成后提交一次 Git 记录。
 
-- [ ] **Step 4: Implement experience and project components**
+---
 
-Render work as a vertical timeline and projects as cards with business scenario, responsibility, solution, outcome, technology tags, and conditional links.
+## 第五阶段：检查效果并发布到 GitHub
 
-- [ ] **Step 5: Implement workflow, education, and contact sections**
+### 要做什么
 
-Render the six-step AI workflow, school/award information, GitHub, email, and resume download without a contact form.
+1. 在本地打开生产版本，检查桌面端和手机端真实效果。
+2. 检查键盘操作、导航跳转、GitHub 链接、简历下载、长文字和减少动画模式。
+3. 对整个项目做一次只读审查，检查事实、隐私、无障碍、链接、部署配置和测试缺口。
+4. 修复检查中发现的严重问题，再执行完整验证。
+5. 创建公开 GitHub 仓库并推送代码。
+6. 启用 GitHub Pages，等待自动部署并检查线上站点。
 
-- [ ] **Step 6: Run content, responsive, unit, and Astro checks**
+### 最终验证命令
 
-Run: `npm run test:unit && npm run check && npx playwright test tests/e2e/content.spec.ts tests/e2e/responsive.spec.ts`
+- npm run test:unit
+- npm run check
+- npm run build
+- npm run audit
+- npx playwright test
+- git diff --check
+- git status --short
 
-Expected: PASS.
+### GitHub 发布命令
 
-- [ ] **Step 7: Commit the completed page narrative**
+- gh repo create 2718704495-eng.github.io --public --source=. --remote=origin --push
 
-```bash
-git add src/components src/pages/index.astro src/styles/global.css tests/e2e/content.spec.ts tests/e2e/responsive.spec.ts
-git commit -m "feat: add resume and project narrative"
-```
+### 最终交付内容
 
-### Task 4: Add resume download, SEO, audits, and GitHub Pages automation
+- [ ] GitHub 仓库：https://github.com/2718704495-eng/2718704495-eng.github.io
+- [ ] 个人网站：https://2718704495-eng.github.io/
+- [ ] 可下载的 PDF 简历。
+- [ ] 通过的构建、内容、移动端和交互测试结果。
+- [ ] 后续修改简历时，只需要更新统一数据文件并推送，网站会自动发布。
 
-**Files:**
-- Create: `public/resume/wang-xiaolei-ai-fullstack.pdf`
-- Create: `public/robots.txt`
-- Create: `public/site.webmanifest`
-- Create: `public/og-card.svg`
-- Create: `scripts/content-audit.mjs`
-- Create: `scripts/link-audit.mjs`
-- Create: `.github/workflows/pages.yml`
-- Create: `README.md`
-- Modify: `package.json`
-- Modify: `astro.config.mjs`
-- Modify: `src/layouts/Base.astro`
-- Create: `tests/unit/audit.test.ts`
+## 第一版暂时不做
 
-**Interfaces:**
-- Consumes the generated page and confirmed source PDF `/Users/wxl/Desktop/王晓磊-AI应用-全栈工程师.pdf`.
-- Produces `npm run audit`, `npm run build`, and a Pages workflow that uploads `dist/`.
-
-- [ ] **Step 1: Write audit tests**
-
-Assert the audit rejects template names, `example.com`, placeholder project titles, empty internal links, missing resume asset, and missing root `index.html` in the production build.
-
-- [ ] **Step 2: Run audit tests and verify they fail**
-
-Run: `npm run test:unit -- tests/unit/audit.test.ts`
-
-Expected: FAIL because audit scripts and public assets do not exist.
-
-- [ ] **Step 3: Add the confirmed PDF and metadata assets**
-
-Copy the source PDF to the public resume path; add the manifest, robots file, favicon/OG metadata, canonical URL, Person JSON-LD, and descriptive social card.
-
-- [ ] **Step 4: Implement content/link audits**
-
-Create deterministic scripts that scan source/generated files and exit non-zero on forbidden placeholders, empty links, missing required files, or absent root entry output.
-
-- [ ] **Step 5: Add GitHub Pages workflow and project documentation**
-
-Configure Actions for Node 22, `npm ci`, unit tests, Astro check, audits, production build, Pages artifact upload, and deployment on `main`. Document local commands, content locations, template attribution, and deployment URL.
-
-- [ ] **Step 6: Run the complete pre-deployment gate**
-
-Run: `npm run test:unit && npm run check && npm run build && npm run audit && npx playwright test`
-
-Expected: all commands PASS and `dist/index.html` plus the resume PDF exist.
-
-- [ ] **Step 7: Commit the production and deployment layer**
-
-```bash
-git add public scripts .github/workflows/pages.yml README.md package.json astro.config.mjs src/layouts/Base.astro tests/unit/audit.test.ts
-git commit -m "feat: prepare portfolio for GitHub Pages"
-```
-
-### Task 5: Visual QA, independent review, and public deployment
-
-**Files:**
-- Modify: only files required to address verified QA or review findings
-
-**Interfaces:**
-- Consumes the verified static build from Task 4.
-- Produces the public repository and confirmed Pages URL.
-
-- [ ] **Step 1: Run local visual QA**
-
-Open the local production preview in Safari-compatible browser automation; inspect desktop and mobile screenshots, keyboard navigation, anchor scrolling, resume download, GitHub links, text clipping, and reduced motion.
-
-- [ ] **Step 2: Fix and re-run only evidence-backed issues**
-
-Apply minimal corrections, then repeat the affected automated and visual checks.
-
-- [ ] **Step 3: Run independent read-only review**
-
-Review the full branch for factual drift, accessibility regressions, mobile overflow, broken links/assets, leaked secrets, deployment misconfiguration, and missing tests. Resolve all serious in-scope findings.
-
-- [ ] **Step 4: Run the final verification gate**
-
-Run: `npm run test:unit && npm run check && npm run build && npm run audit && npx playwright test && git diff --check && git status --short`
-
-Expected: all checks PASS; working tree clean after the final commit.
-
-- [ ] **Step 5: Create and push the public GitHub repository**
-
-Run: `gh repo create 2718704495-eng.github.io --public --source=. --remote=origin --push`
-
-Expected: repository `2718704495-eng/2718704495-eng.github.io` exists and `main` is pushed.
-
-- [ ] **Step 6: Enable Pages through GitHub Actions and verify deployment**
-
-Set the Pages build source to GitHub Actions, wait for the `pages.yml` workflow, inspect failed job logs if needed, and verify the final URL `https://2718704495-eng.github.io/` returns the built homepage.
-
-- [ ] **Step 7: Record the deployment result**
-
-Add the final public URL to `README.md` if it differs, commit/push that correction, and report the repository, site URL, checks run, and any deferred non-blocking improvements.
+- 博客、后台管理、数据库、用户登录和访问统计。
+- 联系表单和需要密钥的第三方服务。
+- 自动读取 GitHub 提交数、Star 数或访问量。
+- 未经确认的性能数字、客户数据、商业机密和个人敏感信息。
