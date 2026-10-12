@@ -1,6 +1,7 @@
 ---
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteNav from '../components/SiteNav.astro';
+import { profile } from '../data/portfolio';
 import '../styles/global.css';
 
 type Props = {
@@ -12,6 +13,27 @@ const {
   title = '王晓磊｜AI 应用 · Java 全栈工程师',
   description = '王晓磊的个人技术作品集：AI Agent、Java 企业级后端、Python 与多端全栈交付。',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImage = new URL('/og-card.svg', Astro.site ?? Astro.url.origin);
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.title,
+  url: canonical.origin,
+  sameAs: [profile.github],
+  email: `mailto:${profile.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: profile.location,
+    addressCountry: 'CN',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: '浙江工业大学之江学院',
+  },
+};
 ---
 
 <!doctype html>
@@ -21,7 +43,20 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#07111f" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <title>{title}</title>
   </head>
   <body>

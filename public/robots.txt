@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://2718704495-eng.github.io/sitemap-index.xml

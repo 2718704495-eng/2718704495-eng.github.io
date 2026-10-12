@@ -1,0 +1,16 @@
+{
+  "name": "王晓磊｜AI 应用 · Java 全栈工程师",
+  "short_name": "王晓磊作品集",
+  "description": "王晓磊的 AI 应用与 Java 全栈个人技术作品集",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

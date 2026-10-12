@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="王晓磊 AI 应用与 Java 全栈工程师">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111f"/>
+      <stop offset="1" stop-color="#0d1a2b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="150" y1="120" x2="880" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#48d7ff"/>
+      <stop offset="1" stop-color="#5ee6a8"/>
+    </linearGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse">
+      <path d="M52 0H0v52" fill="none" stroke="#48d7ff" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1045" cy="80" r="280" fill="#48d7ff" opacity=".08"/>
+  <circle cx="1100" cy="600" r="290" fill="#5ee6a8" opacity=".06"/>
+  <rect x="86" y="76" width="1028" height="478" rx="34" fill="#0d1a2b" fill-opacity=".88" stroke="#21354d"/>
+  <text x="142" y="172" fill="#5ee6a8" font-family="system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="3">AI APPLICATION · FULL-STACK DELIVERY</text>
+  <text x="132" y="330" fill="#edf7ff" font-family="system-ui, sans-serif" font-size="132" font-weight="850" letter-spacing="-9">王晓磊</text>
+  <rect x="142" y="380" width="278" height="6" rx="3" fill="url(#accent)"/>
+  <text x="142" y="458" fill="#9db0c6" font-family="system-ui, sans-serif" font-size="42" font-weight="650">AI 应用 · Java 全栈工程师</text>
+  <text x="142" y="510" fill="#48d7ff" font-family="ui-monospace, monospace" font-size="22">需求 → 代码 → 验证 → 交付</text>
+</svg>
