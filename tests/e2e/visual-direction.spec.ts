@@ -17,6 +17,13 @@ test('首屏以编辑式视觉建立记忆点并保留核心行动入口', async
 });
 
 test('桌面端首屏视觉会响应指针位置', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 8,
+    });
+  });
+  await page.reload();
   await page.setViewportSize({ width: 1440, height: 900 });
   const heroArt = page.locator('[data-hero-art]');
   const box = await heroArt.boundingBox();
