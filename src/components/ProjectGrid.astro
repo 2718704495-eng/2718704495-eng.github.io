@@ -1,0 +1,198 @@
+---
+import { projects } from '../data/portfolio';
+---
+
+<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="section-heading section-heading-wide">
+      <div>
+        <p class="section-kicker">03 / SELECTED WORK</p>
+        <h2 id="projects-title">重点项目</h2>
+      </div>
+      <p>每个项目都按业务问题、本人职责、技术方案和结果展开，体现真实的工程判断与完整交付能力。</p>
+    </div>
+    <div class="project-grid">
+      {projects.map((project, index) => (
+        <article class:list={['project-card', { supplemental: index === projects.length - 1 }]} data-project>
+          <div class="project-head">
+            <span class="project-number">PROJECT / 0{index + 1}</span>
+            <span class="status"><i aria-hidden="true"></i>{project.status}</span>
+          </div>
+          <h3>{project.name}</h3>
+          <p class="project-summary">{project.summary}</p>
+
+          <dl class="project-closure">
+            <div>
+              <dt>业务场景</dt>
+              <dd>{project.problem}</dd>
+            </div>
+            <div>
+              <dt>我负责</dt>
+              <dd>{project.work}</dd>
+            </div>
+            <div>
+              <dt>技术方案</dt>
+              <dd>{project.solution}</dd>
+            </div>
+            <div class="result">
+              <dt>形成结果</dt>
+              <dd>{project.outcome}</dd>
+            </div>
+          </dl>
+
+          <div class="project-footer">
+            <ul class="tag-list" aria-label={`${project.name}技术栈`}>
+              {project.technologies.map((technology) => <li>{technology}</li>)}
+            </ul>
+            {project.href && (
+              <a data-project-link href={project.href} target="_blank" rel="noreferrer">
+                查看项目 <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-heading-wide {
+    display: grid;
+    grid-template-columns: 1fr minmax(18rem, 0.72fr);
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .section-heading-wide > p {
+    justify-self: end;
+    max-width: 34rem;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .project-card {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    padding: clamp(1.35rem, 3vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(140deg, rgb(72 215 255 / 0.055), transparent 36%),
+      var(--color-surface);
+    box-shadow: 0 18px 60px rgb(0 0 0 / 0.08);
+    flex-direction: column;
+  }
+
+  .project-card.supplemental {
+    grid-column: 1 / -1;
+    background:
+      linear-gradient(120deg, rgb(94 230 168 / 0.07), transparent 48%),
+      var(--color-surface);
+  }
+
+  .project-head,
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .project-number {
+    color: var(--color-primary);
+    font: 800 0.72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.09em;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .status i {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    box-shadow: 0 0 0 0.25rem rgb(94 230 168 / 0.1);
+  }
+
+  h3 {
+    max-width: 18em;
+    margin: 1.4rem 0 0;
+    font-size: clamp(1.55rem, 3vw, 2.2rem);
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+  }
+
+  .project-summary {
+    margin: 0.7rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.98rem;
+  }
+
+  .project-closure {
+    display: grid;
+    gap: 0;
+    margin: 1.6rem 0 0;
+  }
+
+  .project-closure > div {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 0.9rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  dt {
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  dd {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-text) 90%, var(--color-muted));
+    font-size: 0.9rem;
+  }
+
+  .result dd { color: var(--color-text); font-weight: 650; }
+
+  .project-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .project-footer .tag-list { margin: 0; }
+
+  .project-footer a {
+    flex: 0 0 auto;
+    color: var(--color-primary);
+    font-size: 0.86rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  @media (max-width: 860px) {
+    .section-heading-wide { grid-template-columns: 1fr; }
+    .section-heading-wide > p { justify-self: start; }
+    .project-grid { grid-template-columns: 1fr; }
+    .project-card.supplemental { grid-column: auto; }
+  }
+
+  @media (max-width: 520px) {
+    .project-closure > div { grid-template-columns: 1fr; gap: 0.25rem; }
+    .project-footer { align-items: flex-start; flex-direction: column; }
+  }
+</style>

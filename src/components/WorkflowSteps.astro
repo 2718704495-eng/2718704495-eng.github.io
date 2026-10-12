@@ -1,0 +1,103 @@
+---
+import { workflow } from '../data/portfolio';
+---
+
+<section id="workflow" class="section" aria-labelledby="workflow-title">
+  <div class="container">
+    <div class="workflow-intro">
+      <div class="section-heading">
+        <p class="section-kicker">04 / AI-NATIVE WORKFLOW</p>
+        <h2 id="workflow-title">AI 原生工作流</h2>
+      </div>
+      <p>AI 用于澄清、拆解、编码与排障；最终结论仍由人工审查、自动化测试、日志与数据核对确认。</p>
+    </div>
+    <ol class="workflow-list">
+      {workflow.map((step, index) => (
+        <li data-workflow-step>
+          <span class="step-number">0{index + 1}</span>
+          <div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="workflow-rule"><strong>原则：</strong>AI 提高推进速度，工程证据决定能否交付。</p>
+  </div>
+</section>
+
+<style>
+  .workflow-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .workflow-intro > p {
+    max-width: 34rem;
+    margin: 0 0 3rem;
+    color: var(--color-muted);
+  }
+
+  .workflow-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 1px;
+    border-radius: var(--radius-lg);
+    background: var(--color-border);
+    list-style: none;
+    overflow: hidden;
+  }
+
+  .workflow-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    min-width: 0;
+    min-height: 10.5rem;
+    padding: 1.4rem;
+    background: var(--color-surface);
+  }
+
+  .step-number {
+    display: grid;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-primary);
+    font: 800 0.75rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    place-items: center;
+  }
+
+  h3 { margin: 0.35rem 0 0; font-size: 1.08rem; }
+  li p { margin: 0.65rem 0 0; color: var(--color-muted); font-size: 0.9rem; }
+
+  .workflow-rule {
+    margin: 1.25rem 0 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, rgb(72 215 255 / 0.08), rgb(94 230 168 / 0.04));
+    text-align: center;
+  }
+
+  .workflow-rule strong { color: var(--color-secondary); }
+
+  @media (max-width: 880px) {
+    .workflow-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 700px) {
+    .workflow-intro { grid-template-columns: 1fr; }
+    .workflow-intro > p { margin-top: -1.5rem; }
+  }
+
+  @media (max-width: 560px) {
+    .workflow-list { grid-template-columns: 1fr; }
+    .workflow-list li { min-height: auto; }
+  }
+</style>

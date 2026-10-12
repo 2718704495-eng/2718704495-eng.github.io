@@ -90,18 +90,95 @@ svg {
 }
 
 .section {
-  padding-block: var(--space-16);
+  padding-block: clamp(4rem, 9vw, 7.5rem);
 }
 
-.section-placeholder {
-  min-height: 15rem;
-  border-top: 1px solid var(--color-border);
+.section-heading {
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
-.section-placeholder h2 {
+.section-heading h2 {
   margin: 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  letter-spacing: -0.035em;
+  font-size: clamp(2.3rem, 6vw, 4.4rem);
+  letter-spacing: -0.055em;
+  line-height: 1.04;
+}
+
+.section-heading > p:not(.section-kicker) {
+  max-width: 41rem;
+  margin: 1rem 0 0;
+  color: var(--color-muted);
+}
+
+.section-kicker {
+  margin: 0 0 0.8rem;
+  color: var(--color-primary);
+  font: 800 0.75rem ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.11em;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 2.9rem;
+  padding: 0.68rem 1.05rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.button-primary {
+  background: var(--color-primary);
+  color: #03101a;
+}
+
+.button-primary:hover {
+  background: var(--color-secondary);
+  color: #03101a;
+  box-shadow: 0 10px 30px rgb(72 215 255 / 0.2);
+}
+
+.button-secondary {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.button-secondary:hover,
+.button-ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.button-ghost {
+  border-color: transparent;
+  color: var(--color-muted);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.4rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  max-width: 100%;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-deep);
+  color: var(--color-muted);
+  font: 650 0.72rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 720px) {

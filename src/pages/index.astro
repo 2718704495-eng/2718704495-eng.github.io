@@ -1,27 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
+import CapabilityGrid from '../components/CapabilityGrid.astro';
+import EducationCard from '../components/EducationCard.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import Hero from '../components/Hero.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import WorkflowSteps from '../components/WorkflowSteps.astro';
 ---
 
 <Base>
-  <section id="about" class="section section-placeholder">
-    <div class="container">
-      <h1>王晓磊</h1>
-      <p>AI 应用 · Java 全栈工程师</p>
-    </div>
-  </section>
-  <section class="section section-placeholder" aria-labelledby="capabilities-title">
-    <div class="container"><h2 id="capabilities-title">核心能力</h2></div>
-  </section>
-  <section id="experience" class="section section-placeholder">
-    <div class="container"><h2>工作经历</h2></div>
-  </section>
-  <section id="projects" class="section section-placeholder">
-    <div class="container"><h2>重点项目</h2></div>
-  </section>
-  <section id="workflow" class="section section-placeholder">
-    <div class="container"><h2>AI 原生工作流</h2></div>
-  </section>
-  <section id="contact" class="section section-placeholder">
-    <div class="container"><h2>联系我</h2></div>
-  </section>
+  <Hero />
+  <CapabilityGrid />
+  <ExperienceTimeline />
+  <ProjectGrid />
+  <WorkflowSteps />
+  <EducationCard />
 </Base>

@@ -18,7 +18,7 @@ test('为键盘用户提供清晰的主内容入口和站内导航', async ({ pa
 
 test('站内导航可以到达对应区域', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: '项目' }).click();
+  await page.getByRole('link', { name: '项目', exact: true }).click();
   await expect(page).toHaveURL(/#projects$/);
   await expect(page.locator('#projects')).toBeInViewport();
 });

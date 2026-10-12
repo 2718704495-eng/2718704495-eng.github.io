@@ -1,0 +1,110 @@
+---
+import { capabilities } from '../data/portfolio';
+---
+
+<section class="section" aria-labelledby="capabilities-title">
+  <div class="container">
+    <div class="section-heading">
+      <p class="section-kicker">01 / CAPABILITIES</p>
+      <h2 id="capabilities-title">核心能力</h2>
+      <p>从 AI 应用编排到企业业务交付，能力都落在可验证的项目与业务链路中。</p>
+    </div>
+    <div class="capability-grid">
+      {capabilities.map((capability, index) => (
+        <article class="capability-card" data-capability>
+          <div class="card-top">
+            <span class="card-index">0{index + 1}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 4h14v12H8l-3 3V4Zm3 4h8M8 12h5" />
+            </svg>
+          </div>
+          <h3>{capability.title}</h3>
+          <p>{capability.description}</p>
+          <ul class="tag-list" aria-label={`${capability.title}技术`}>
+            {capability.technologies.map((technology) => <li>{technology}</li>)}
+          </ul>
+          <p class="evidence"><strong>实践：</strong>{capability.evidence}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .capability-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .capability-card {
+    display: flex;
+    min-width: 0;
+    min-height: 27rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    flex-direction: column;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .capability-card:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 52%, var(--color-border));
+    box-shadow: 0 18px 54px rgb(0 0 0 / 0.14);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-index {
+    color: var(--color-primary);
+    font: 800 0.75rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.1em;
+  }
+
+  svg {
+    width: 1.5rem;
+    color: var(--color-secondary);
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  h3 {
+    margin: 2.8rem 0 0.75rem;
+    font-size: 1.3rem;
+    letter-spacing: -0.025em;
+  }
+
+  .capability-card > p:not(.evidence) {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  .evidence {
+    margin: auto 0 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+
+  .evidence strong { color: var(--color-text); }
+
+  @media (max-width: 1040px) {
+    .capability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .capability-card { min-height: 23rem; }
+  }
+
+  @media (max-width: 620px) {
+    .capability-grid { grid-template-columns: 1fr; }
+    .capability-card { min-height: auto; }
+    .evidence { margin-top: 1.5rem; }
+  }
+</style>

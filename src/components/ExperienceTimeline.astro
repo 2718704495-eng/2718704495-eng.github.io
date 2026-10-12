@@ -1,0 +1,152 @@
+---
+import { experience } from '../data/portfolio';
+---
+
+<section id="experience" class="section" aria-labelledby="experience-title">
+  <div class="container experience-layout">
+    <div class="section-heading sticky-heading">
+      <p class="section-kicker">02 / EXPERIENCE</p>
+      <h2 id="experience-title">工作经历</h2>
+      <p>不只罗列参与过什么，更说明我负责的业务、采用的方案与形成的结果。</p>
+    </div>
+    <div class="timeline">
+      {experience.map((item) => (
+        <article class="experience-card" data-experience>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <p class="period">{item.period}</p>
+          <h3>{item.company}</h3>
+          <p class="role">{item.role}</p>
+          <p class="summary">{item.summary}</p>
+          <ul>
+            {item.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+          <div class="outcome">
+            <span>交付结果</span>
+            <p>{item.outcome}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience-layout {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(2rem, 8vw, 7rem);
+    align-items: start;
+  }
+
+  .sticky-heading { position: sticky; top: 7rem; }
+
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.4rem;
+    width: 1px;
+    background: linear-gradient(var(--color-primary), var(--color-secondary));
+    content: '';
+  }
+
+  .experience-card {
+    position: relative;
+    min-width: 0;
+    padding: clamp(1.4rem, 4vw, 2.2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 2rem;
+    left: -2.1rem;
+    width: 1rem;
+    height: 1rem;
+    border: 0.25rem solid var(--color-bg);
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+
+  .period,
+  .role {
+    margin: 0;
+    color: var(--color-primary);
+    font: 750 0.78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.06em;
+  }
+
+  h3 {
+    margin: 0.75rem 0 0.15rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .role { color: var(--color-secondary); }
+
+  .summary {
+    margin: 1.25rem 0 0;
+    color: var(--color-muted);
+  }
+
+  ul {
+    display: grid;
+    gap: 0.7rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  li::before {
+    position: absolute;
+    top: 0.68rem;
+    left: 0;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    content: '';
+  }
+
+  .outcome {
+    margin-top: 1.6rem;
+    padding: 1rem 1.1rem;
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--color-surface-raised);
+  }
+
+  .outcome span {
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .outcome p { margin: 0.35rem 0 0; }
+
+  @media (max-width: 800px) {
+    .experience-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .sticky-heading { position: static; }
+  }
+
+  @media (max-width: 520px) {
+    .timeline { padding-left: 1.15rem; }
+    .timeline::before { left: 0.15rem; }
+    .timeline-dot { left: -1.35rem; }
+  }
+</style>
