@@ -8,7 +8,9 @@
   --color-muted: #9db0c6;
   --color-primary: #48d7ff;
   --color-primary-strong: #11bde9;
+  --color-on-primary: #03101a;
   --color-secondary: #5ee6a8;
+  --color-on-secondary: #03101a;
   --color-border: #21354d;
   --color-focus: #f7d46b;
   --shadow-card: 0 24px 70px rgb(0 0 0 / 0.24);
@@ -41,7 +43,9 @@
     --color-muted: #4f6379;
     --color-primary: #007ba3;
     --color-primary-strong: #006684;
+    --color-on-primary: #ffffff;
     --color-secondary: #087e55;
+    --color-on-secondary: #ffffff;
     --color-border: #cfdae7;
     --color-focus: #9a5d00;
     --shadow-card: 0 24px 70px rgb(25 55 85 / 0.12);

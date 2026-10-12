@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 for (const viewport of [
-  { name: '手机', width: 390, height: 844 },
+  { name: '小屏手机', width: 375, height: 812 },
+  { name: '平板', width: 768, height: 1024 },
   { name: '桌面', width: 1440, height: 900 },
+  { name: '手机横屏', width: 844, height: 390 },
 ]) {
   test(`${viewport.name}尺寸没有横向溢出或内容遮挡`, async ({ page }) => {
     await page.setViewportSize(viewport);
@@ -20,3 +22,18 @@ for (const viewport of [
     await expect(page.locator('#contact')).toBeVisible();
   });
 }
+
+test('放大到 200% 字号后核心内容仍能回流', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+
+  const dimensions = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth,
+    viewport: document.documentElement.clientWidth,
+  }));
+
+  expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+  await expect(page.getByRole('heading', { name: '重点项目' })).toBeVisible();
+  await expect(page.locator('#contact')).toBeVisible();
+});

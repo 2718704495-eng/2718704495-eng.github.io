@@ -13,7 +13,7 @@ html {
 
 body {
   margin: 0;
-  min-width: 20rem;
+  min-width: 0;
   min-height: 100vh;
   overflow-x: hidden;
   background:
@@ -135,12 +135,12 @@ svg {
 
 .button-primary {
   background: var(--color-primary);
-  color: #03101a;
+  color: var(--color-on-primary);
 }
 
 .button-primary:hover {
   background: var(--color-secondary);
-  color: #03101a;
+  color: var(--color-on-secondary);
   box-shadow: 0 10px 30px rgb(72 215 255 / 0.2);
 }
 
